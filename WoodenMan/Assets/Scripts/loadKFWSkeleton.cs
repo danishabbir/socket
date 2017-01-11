@@ -2,7 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 
-public class loadKFWSkeleton : MonoBehaviour {
+public class loadKFWSkeleton : MonoBehaviour
+{
 
     private StreamReader m_3DPoseFileStream;
 
@@ -15,6 +16,8 @@ public class loadKFWSkeleton : MonoBehaviour {
     private bool m_isKFWFingers = false;
     private int m_FrameCtr = 0;
     private bool m_isValid = false;
+    private bool m_isVRMode = false;
+    private bool m_isMoveFloor = false;
 
     private bool m_isVNECTMode = true;
     private List<int> m_ValidJointIdx;
@@ -22,15 +25,19 @@ public class loadKFWSkeleton : MonoBehaviour {
     private string m_SequenceName;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //Screen.SetResolution(1920, 1080, true);
-        Screen.SetResolution(1280, 720, true);
         Application.runInBackground = true;
 
-        m_isVNECTMode = true;
-        m_SequenceName = "DCorridor_VNECT";
-        //m_isVNECTMode = false;
-        //m_SequenceName = "DCorridor_KFW";
+        m_isVRMode = true;
+        m_isMoveFloor = false;
+        m_isVNECTMode = false;
+
+        if (m_isVNECTMode)
+            m_SequenceName = "DCorridor_VNECT";
+        else
+            m_SequenceName = "DCorridor_KFW";
         FileStream fs = new FileStream(UnityEngine.Application.streamingAssetsPath + "/" + m_SequenceName + ".txt", FileMode.Open, FileAccess.Read, FileShare.Read);
         m_3DPoseFileStream = new StreamReader(fs);
         if (m_3DPoseFileStream == null)
@@ -173,7 +180,8 @@ public class loadKFWSkeleton : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         string Line = m_3DPoseFileStream.ReadLine();
         m_isValid = false;
 
@@ -191,7 +199,7 @@ public class loadKFWSkeleton : MonoBehaviour {
             if ((Tokens.Length - ParseOffset) / 3 != 58)
                 return;
             float LowestY = 0.0f;
-            Vector3[] Joints = new Vector3[(Tokens.Length-ParseOffset) / 3];
+            Vector3[] Joints = new Vector3[(Tokens.Length - ParseOffset) / 3];
             for (int i = 0; i < m_JointSpheres.Length; ++i)
             {
                 int Idx = m_ValidJointIdx[i];
@@ -215,12 +223,22 @@ public class loadKFWSkeleton : MonoBehaviour {
                 float PlaneFootBuffer = 0.02f;
                 Vector3 OrigPos = Plane.transform.position;
 
-                Plane.transform.position = new Vector3(OrigPos[0], LowestY - PlaneFootBuffer, OrigPos[2]);
+                if(m_isMoveFloor)
+                    Plane.transform.position = new Vector3(OrigPos[0], LowestY - PlaneFootBuffer, OrigPos[2]);
 
-                // Move camera with checkerboard plane
                 GameObject FollowerCamera = GameObject.Find("FollowerCamera");
-                OrigPos = FollowerCamera.transform.position;
-                FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                if (m_isVRMode)
+                {
+                    // Align VR head pose with character
+                    FollowerCamera.transform.position = Joints[6];
+                    FollowerCamera.transform.rotation = GvrViewer.Controller.Head.transform.rotation;
+                }
+                else
+                {
+                    // Move camera with checkerboard plane
+                    OrigPos = FollowerCamera.transform.position;
+                    FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                }
             }
 
             //0-root_rx, 1-spine_3_rx
@@ -311,12 +329,21 @@ public class loadKFWSkeleton : MonoBehaviour {
                 float PlaneFootBuffer = 0.02f;
                 Vector3 OrigPos = Plane.transform.position;
 
-                Plane.transform.position = new Vector3(OrigPos[0], LowestY - PlaneFootBuffer, OrigPos[2]);
+                if (m_isMoveFloor)
+                    Plane.transform.position = new Vector3(OrigPos[0], LowestY - PlaneFootBuffer, OrigPos[2]);
 
                 // Move camera with checkerboard plane
                 GameObject FollowerCamera = GameObject.Find("FollowerCamera");
-                OrigPos = FollowerCamera.transform.position;
-                FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                if (m_isVRMode)
+                {
+                    FollowerCamera.transform.position = Joints[3];
+                    FollowerCamera.transform.rotation = GvrViewer.Controller.Head.transform.rotation;
+                }
+                else
+                {
+                    OrigPos = FollowerCamera.transform.position;
+                    FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                }
             }
 
             //0-SpineBase, 1-SpineMid
