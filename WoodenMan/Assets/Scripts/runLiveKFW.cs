@@ -85,6 +85,13 @@ public class runLiveKFW : runLive
             m_JointSpheres[i].transform.position = Joints[i];
         }
 
+        // Hide some spheres
+        if (m_isKFWFingers == true)
+        {
+            m_JointSpheres[7].GetComponent<Renderer>().enabled = false;
+            m_JointSpheres[11].GetComponent<Renderer>().enabled = false;
+        }
+
         // Make floor stick to bottom-most joint (at index 16 or 20)
         GameObject Plane = GameObject.Find("CheckerboardPlane");
         if (Plane != null)
@@ -126,6 +133,8 @@ public class runLiveKFW : runLive
         //6-WristLeft, 7-HandLeft
         if (m_isKFWFingers == true)
             drawEllipsoid(Joints[6], Joints[7], m_Bones[6]);
+        else
+            m_Bones[6].GetComponent<Renderer>().enabled = false;
 
         //20-SpineShoulder, 8-ShoulderRight
         drawEllipsoid(Joints[20], Joints[8], m_Bones[7]);
@@ -136,6 +145,8 @@ public class runLiveKFW : runLive
         //10-Unknown, 11-HandRight
         if (m_isKFWFingers == true)
             drawEllipsoid(Joints[10], Joints[11], m_Bones[10]);
+        else
+            m_Bones[6].GetComponent<Renderer>().enabled = false;
 
         //12-HipLeft, 13-KneeLeft
         drawEllipsoid(Joints[12], Joints[13], m_Bones[11]);

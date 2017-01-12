@@ -20,7 +20,7 @@ public class WebSocketClient : MonoBehaviour
 
         //using (m_ws = new WebSocket("ws://localhost:8080/"))
         //using (m_ws = new WebSocket("ws://139.19.111.138:8080/")) // Dell big machine
-        using (m_ws = new WebSocket("ws://139.19.111.107:8080/")) // Red machine
+        using (m_ws = new WebSocket("ws://139.19.111.132:8080/")) // Red machine
         {
             //m_ws.Log.Level = WebSocketSharp.LogLevel.TRACE;
             //m_ws.Log.File = "D:\\ws_log.txt";
