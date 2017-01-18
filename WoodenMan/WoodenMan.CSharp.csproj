@@ -200,6 +200,7 @@
     <None Include="Assets\StreamingAssets\DCorridor_KFW.txt" />
     <None Include="Assets\StreamingAssets\DCorridor_VNECT.txt" />
     <None Include="Assets\StreamingAssets\DRotunda.txt" />
+    <None Include="Assets\StreamingAssets\Football_2.txt" />
     <None Include="Assets\StreamingAssets\KFWFormat.txt" />
     <None Include="Assets\StreamingAssets\VNECTFormat.txt" />
     <None Include="Assets\websocket-sharp for Unity\Plugins\websocket-sharp.xml" />
