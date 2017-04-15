@@ -241,10 +241,10 @@ public class GvrProfile {
       alignment = Lenses.AlignBottom,
     },
     maxFOV = {
-      outer = 60.0f,
-      inner = 60.0f,
-      upper = 60.0f,
-      lower = 60.0f
+      outer = 200.0f,
+      inner = 200.0f,
+      upper = 200.0f,
+      lower = 200.0f
     },
     distortion = {
       Coef = new [] { 0.34f, 0.55f },

@@ -8,7 +8,7 @@ public class runLiveVNect : runLive
 
     override public void Start()
     {
-        m_isMoveFloor = false;
+        m_isMoveFloor = true;
 
         // Parse header
         string Line = "# <REAL WORLD METERS (x, y ,z)>: root_tx, root_ty, root_tz, root_rz, root_ry, root_rx, spine_3_ry, spine_3_rz, spine_3_rx, spine_4_ry, spine_4_rz, spine_4_rx, spine_2_ry, spine_2_rz, spine_2_rx, spine_1_ry, spine_1_rz, spine_1_rx, neck_1_ry, neck_1_rz, neck_1_rx, head_ee_ry, left_clavicle_ry, left_clavicle_rz, left_shoulder_rz, left_shoulder_rx, left_shoulder_ry, left_elbow_rx, left_lowarm_twist, left_hand_rx, left_hand_ry, left_ee_rx, right_clavicle_ry, right_clavicle_rz, right_shoulder_rz, right_shoulder_rx, right_shoulder_ry, right_elbow_rx, right_lowarm_twist, right_hand_rx, right_hand_ry, right_ee_rx, left_hip_rx, left_hip_rz, left_hip_ry, left_knee_rx, left_ankle_rx, left_ankle_ry, left_toes_rx, left_foot_ee, right_hip_rx, right_hip_rz, right_hip_ry, right_knee_rx, right_ankle_rx, right_ankle_ry, right_toes_rx, right_foot_ee";
@@ -61,7 +61,11 @@ public class runLiveVNect : runLive
             m_JointSpheres[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             m_WoodMatRef = Resources.Load("wood_Texture", typeof(Material)) as Material; // loads from Assests/Resources directory
             if (m_WoodMatRef != null)
+            {
                 m_JointSpheres[i].GetComponent<Renderer>().material = m_WoodMatRef;
+                //m_JointSpheres[i].GetComponent<Renderer>().material.color = new Color(252.0f / 255.0f, 114.0f / 255.0f, 114.0f / 255.0f);
+                m_JointSpheres[i].GetComponent<Renderer>().material.color = new Color(252.0f / 255.0f, 164.0f / 255.0f, 63.0f / 255.0f);
+            }
             else
             {
                 Debug.Log("Wood texture not assigned, will draw red.");
@@ -80,7 +84,11 @@ public class runLiveVNect : runLive
         {
             m_Bones[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             if (m_WoodMatRef != null)
+            {
                 m_Bones[i].GetComponent<Renderer>().material = m_WoodMatRef;
+                //m_Bones[i].GetComponent<Renderer>().material.color = new Color(252.0f / 255.0f, 114.0f / 255.0f, 114.0f / 255.0f);
+                m_Bones[i].GetComponent<Renderer>().material.color = new Color(252.0f / 255.0f, 164.0f / 255.0f, 63.0f / 255.0f);
+            }
             else
             {
                 Debug.Log("Wood texture not assigned, will draw red.");
@@ -91,6 +99,8 @@ public class runLiveVNect : runLive
 
     override public void Update(string Line)
     {
+
+
         //Debug.Log(Line);
 
         if (Line.Length == 0)
@@ -107,7 +117,7 @@ public class runLiveVNect : runLive
         for (int i = 0; i < m_JointSpheres.Length; ++i)
         {
             int Idx = m_ValidJointIdx[i];
-            Joints[i].x = -float.Parse(Tokens[3 * Idx + 0 + ParseOffset]) * 0.001f; // Prevent mirroring
+            Joints[i].x = float.Parse(Tokens[3 * Idx + 0 + ParseOffset]) * 0.001f; // Prevent mirroring
             Joints[i].y = float.Parse(Tokens[3 * Idx + 1 + ParseOffset]) * 0.001f;
             Joints[i].z = -float.Parse(Tokens[3 * Idx + 2 + ParseOffset]) * 0.001f; // Flip for Google VR
 
@@ -122,28 +132,68 @@ public class runLiveVNect : runLive
 
         // Make floor stick to bottom-most joint (at index 16 or 20)
         GameObject Plane = GameObject.Find("CheckerboardPlane");
+        float PlaneFootBuffer = 0.02f;
+        float MoveAmount = 0.0f;
         if (Plane != null)
         {
-            float PlaneFootBuffer = 0.02f;
             Vector3 OrigPos = Plane.transform.position;
 
             if (m_isMoveFloor)
+            {
+                MoveAmount = Plane.transform.position.y;
                 Plane.transform.position = new Vector3(OrigPos[0], LowestY - PlaneFootBuffer, OrigPos[2]);
+                MoveAmount = MoveAmount - Plane.transform.position.y;
+            }
 
-            GameObject FollowerCamera = GameObject.Find("FollowerCamera");
             if (m_isVRMode)
             {
                 GameObject Head = GameObject.Find("Main Camera");
-                Head.transform.position = Joints[6];
-                Head.transform.rotation = GvrViewer.Controller.Head.transform.rotation;
+                if (Head != null)
+                {
+                    Head.transform.position = Joints[6];
+                    Head.transform.rotation = GvrViewer.Controller.Head.transform.rotation;
+                }
             }
             else
             {
-                // Move camera with checkerboard plane
-                OrigPos = FollowerCamera.transform.position;
-                FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                GameObject FollowerCamera = GameObject.Find("ExternalCamera");
+                if (FollowerCamera != null)
+                {
+                    // Move camera with checkerboard plane
+                    OrigPos = FollowerCamera.transform.position;
+                    FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                }
+                else
+                    Debug.Log("Empty follower camera.");
             }
         }
+
+        if (GameObject.Find("AllBalls") != null)
+        {
+            int childCount = GameObject.Find("AllBalls").GetComponent<Transform>().GetChildCount();
+            Transform Feet = GameObject.Find("feet").GetComponent<Transform>();
+            for (int i = 0; i < childCount; ++i)
+            {
+                int childCnt = GameObject.Find("AllBalls").GetComponent<Transform>().GetChild(i).GetChildCount();
+                for (int j = 0; j < childCnt; ++j)
+                {
+                    Transform Ball = GameObject.Find("AllBalls").GetComponent<Transform>().GetChild(i).GetChild(j);
+                    Vector3 OldPos = Ball.transform.position;
+                    if (Ball.GetComponent<Rigidbody>() != null)
+                    {
+                        Ball.GetComponent<Collider>().attachedRigidbody.useGravity = false;
+                        Ball.GetComponent<Rigidbody>().isKinematic = true;
+
+                        Ball.position = new Vector3(OldPos[0], OldPos[1] - MoveAmount, OldPos[2]);
+
+                        Ball.GetComponent<Collider>().attachedRigidbody.useGravity = true;
+                        Ball.GetComponent<Rigidbody>().isKinematic = false;
+                    }
+                }
+            }
+        }
+
+
 
         //0-root_rx, 1-spine_3_rx
         drawEllipsoid(Joints[0], Joints[1], m_Bones[0]);
@@ -193,7 +243,7 @@ public class runLiveVNect : runLive
         //21-left_ankle_ry, 22-left_toes_rx
         drawEllipsoid(Joints[21], Joints[22], m_Bones[21]);
         //22-left_toes_rx, 23-left_foot_ee
-        drawEllipsoid(Joints[22], Joints[23], m_Bones[22]);
+        //drawEllipsoid(Joints[22], Joints[23], m_Bones[22]);
 
         //4-spine_1_rx, 24-right_hip_ry
         drawEllipsoid(Joints[4], Joints[24], m_Bones[23]);
@@ -204,6 +254,26 @@ public class runLiveVNect : runLive
         //26-right_ankle_ry, 27-right_toes_rx
         drawEllipsoid(Joints[26], Joints[27], m_Bones[26]);
         //27-right_toes_rx, 28-right_foot_ee
-        drawEllipsoid(Joints[27], Joints[28], m_Bones[27]);
+        //drawEllipsoid(Joints[27], Joints[28], m_Bones[27]);
+
+        // Disable toe sphere
+        m_JointSpheres[22].GetComponent<MeshRenderer>().enabled = false;
+        m_JointSpheres[23].GetComponent<MeshRenderer>().enabled = false;
+        m_JointSpheres[27].GetComponent<MeshRenderer>().enabled = false;
+        m_JointSpheres[28].GetComponent<MeshRenderer>().enabled = false;
+        m_Bones[22].GetComponent<MeshRenderer>().enabled = false;
+        m_Bones[27].GetComponent<MeshRenderer>().enabled = false;
+
+        // Draw mesh
+        RFoot.transform.rotation = Quaternion.LookRotation((Joints[23] - Joints[22]).normalized);
+        RFoot.transform.rotation = Quaternion.Euler(RFoot.transform.eulerAngles + new Vector3(140, 0, 0));
+        RFoot.transform.position = Joints[22];
+
+        // Rotate z-axis to align with bone vector
+        LFoot.transform.rotation = Quaternion.LookRotation((Joints[28] - Joints[27]).normalized);
+        LFoot.transform.rotation = Quaternion.Euler(LFoot.transform.eulerAngles + new Vector3(140, 0, 0));
+        // Position at middle
+        LFoot.transform.position = Joints[27];
+
     }
 }

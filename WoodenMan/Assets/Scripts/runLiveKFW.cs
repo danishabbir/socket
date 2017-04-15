@@ -6,9 +6,10 @@ public class runLiveKFW : runLive
 {
     private bool m_isKFWFingers = false;
 
+
     override public void Start()
     {
-        m_isMoveFloor = false;
+        m_isMoveFloor = true;
 
         // Parse header
         string Line = "# <REAL WORLD METERS (x, y ,z)>: SpineBase, SpineMid, Neck, Head, ShoulderLeft, ElbowLeft, WristLeft, HandLeft, ShoulderRight, ElbowRight, Unknown, HandRight, HipLeft, KneeLeft, AnkleLeft, FootLeft, HipRight, KneeRight, AnkleRight, FootRight, SpineShoulder, HandTipLeft, ThumbLeft, HandTipRight, ThumbRight";
@@ -28,6 +29,7 @@ public class runLiveKFW : runLive
         for (int i = 0; i < m_JointSpheres.Length; ++i)
         {
             m_JointSpheres[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
             m_WoodMatRef = Resources.Load("wood_Texture", typeof(Material)) as Material; // loads from Assests/Resources directory
             if (m_WoodMatRef != null)
                 m_JointSpheres[i].GetComponent<Renderer>().material = m_WoodMatRef;
@@ -63,7 +65,7 @@ public class runLiveKFW : runLive
     override public void Update(string Line)
     {
         //Debug.Log(Line);
-
+        //Debug.Log("Line length: " + Line.Length);
         if (Line.Length == 0)
             return;
 
@@ -86,10 +88,10 @@ public class runLiveKFW : runLive
         }
 
         // Hide some spheres
-        if (m_isKFWFingers == true)
+        if (m_isKFWFingers == false)
         {
-            m_JointSpheres[7].GetComponent<Renderer>().enabled = false;
-            m_JointSpheres[11].GetComponent<Renderer>().enabled = false;
+            m_JointSpheres[7].GetComponent<MeshRenderer>().enabled = false;
+            m_JointSpheres[11].GetComponent<MeshRenderer>().enabled = false;
         }
 
         // Make floor stick to bottom-most joint (at index 16 or 20)
@@ -111,9 +113,12 @@ public class runLiveKFW : runLive
             }
             else
             {
-                GameObject FollowerCamera = GameObject.Find("FollowerCamera");
-                OrigPos = FollowerCamera.transform.position;
-                FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                GameObject FollowerCamera = GameObject.Find("ExternalCamera");
+                if (FollowerCamera != null)
+                {
+                    OrigPos = FollowerCamera.transform.position;
+                    FollowerCamera.transform.position = new Vector3(OrigPos[0], Plane.transform.position.y + 1, OrigPos[2]);
+                }
             }
         }
 
@@ -134,7 +139,7 @@ public class runLiveKFW : runLive
         if (m_isKFWFingers == true)
             drawEllipsoid(Joints[6], Joints[7], m_Bones[6]);
         else
-            m_Bones[6].GetComponent<Renderer>().enabled = false;
+            m_Bones[6].GetComponent<MeshRenderer>().enabled = false;
 
         //20-SpineShoulder, 8-ShoulderRight
         drawEllipsoid(Joints[20], Joints[8], m_Bones[7]);
@@ -146,21 +151,40 @@ public class runLiveKFW : runLive
         if (m_isKFWFingers == true)
             drawEllipsoid(Joints[10], Joints[11], m_Bones[10]);
         else
-            m_Bones[6].GetComponent<Renderer>().enabled = false;
+            m_Bones[10].GetComponent<MeshRenderer>().enabled = false;
 
         //12-HipLeft, 13-KneeLeft
         drawEllipsoid(Joints[12], Joints[13], m_Bones[11]);
         //13-KneeLeft, 14-AnkleLeft
         drawEllipsoid(Joints[13], Joints[14], m_Bones[12]);
         //14-AnkleLeft, 15-FootLeft
-        drawEllipsoid(Joints[14], Joints[15], m_Bones[13]);
+        //drawEllipsoid(Joints[14], Joints[15], m_Bones[13]);
 
         //16-HipRight, 17-KneeRight
         drawEllipsoid(Joints[16], Joints[17], m_Bones[14]);
         //17-KneeRight, 18-AnkleRight
         drawEllipsoid(Joints[17], Joints[18], m_Bones[15]);
         //18-AnkleRight, 19-FootRight
-        drawEllipsoid(Joints[18], Joints[19], m_Bones[16]);
+        //drawEllipsoid(Joints[18], Joints[19], m_Bones[16]);
+
+        // Disable toe sphere
+        m_JointSpheres[18].GetComponent<MeshRenderer>().enabled = false;
+        m_JointSpheres[19].GetComponent<MeshRenderer>().enabled = false;
+        m_JointSpheres[14].GetComponent<MeshRenderer>().enabled = false;
+        m_JointSpheres[15].GetComponent<MeshRenderer>().enabled = false;
+        m_Bones[13].GetComponent<MeshRenderer>().enabled = false;
+        m_Bones[16].GetComponent<MeshRenderer>().enabled = false;
+
+        // Draw mesh
+        RFoot.transform.rotation = Quaternion.LookRotation((Joints[19] - Joints[18]).normalized);
+        RFoot.transform.rotation = Quaternion.Euler(RFoot.transform.eulerAngles + new Vector3(140, 0, 0));
+        RFoot.transform.position = Joints[18];
+
+        // Rotate z-axis to align with bone vector
+        LFoot.transform.rotation = Quaternion.LookRotation((Joints[15] - Joints[14]).normalized);
+        LFoot.transform.rotation = Quaternion.Euler(LFoot.transform.eulerAngles + new Vector3(140, 0, 0));
+        // Position at middle
+        LFoot.transform.position = Joints[14];
 
         if (m_isKFWFingers == true)
         {

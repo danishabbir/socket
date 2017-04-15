@@ -11,6 +11,8 @@ public class loadKFWSkeleton : MonoBehaviour
     private GameObject[] m_JointSpheres;
     private GameObject[] m_Bones;
     public Material m_WoodMatRef;
+    public GameObject LFoot;
+    public GameObject RFoot;
     private Vector3 m_CameraOffset;
 
     private bool m_isKFWFingers = false;
@@ -289,7 +291,7 @@ public class loadKFWSkeleton : MonoBehaviour
             //21-left_ankle_ry, 22-left_toes_rx
             drawEllipsoid(Joints[21], Joints[22], m_Bones[21]);
             //22-left_toes_rx, 23-left_foot_ee
-            drawEllipsoid(Joints[22], Joints[23], m_Bones[22]);
+            //drawEllipsoid(Joints[22], Joints[23], m_Bones[22]);
 
             //4-spine_1_rx, 24-right_hip_ry
             drawEllipsoid(Joints[4], Joints[24], m_Bones[23]);
@@ -300,7 +302,7 @@ public class loadKFWSkeleton : MonoBehaviour
             //26-right_ankle_ry, 27-right_toes_rx
             drawEllipsoid(Joints[26], Joints[27], m_Bones[26]);
             //27-right_toes_rx, 28-right_foot_ee
-            drawEllipsoid(Joints[27], Joints[28], m_Bones[27]);
+            //drawEllipsoid(Joints[27], Joints[28], m_Bones[27]);
         }
         else
         {
@@ -376,15 +378,27 @@ public class loadKFWSkeleton : MonoBehaviour
             //13-KneeLeft, 14-AnkleLeft
             drawEllipsoid(Joints[13], Joints[14], m_Bones[12]);
             //14-AnkleLeft, 15-FootLeft
-            drawEllipsoid(Joints[14], Joints[15], m_Bones[13]);
+            //LFoot.position = Joints[14];
+            //LFoot.transform.rotation = Quaternion.LookRotation((Joints[15] - Joints[14]).normalized);
+            
+            // Rotate z-axis to align with bone vector
+            LFoot.transform.rotation = Quaternion.LookRotation((Joints[15] - Joints[14]).normalized);
+            LFoot.transform.rotation = Quaternion.Euler(LFoot.transform.eulerAngles + new Vector3(90,0,0));
+            
+
+            // Position at middle
+            LFoot.transform.position = Joints[14];
+            //drawEllipsoid(Joints[14], Joints[15], LFoot);
 
             //16-HipRight, 17-KneeRight
             drawEllipsoid(Joints[16], Joints[17], m_Bones[14]);
             //17-KneeRight, 18-AnkleRight
             drawEllipsoid(Joints[17], Joints[18], m_Bones[15]);
             //18-AnkleRight, 19-FootRight
-            drawEllipsoid(Joints[18], Joints[19], m_Bones[16]);
-
+            //drawEllipsoid(Joints[18], Joints[19], m_Bones[16]);
+            RFoot.transform.rotation = Quaternion.LookRotation((Joints[19] - Joints[18]).normalized);
+            RFoot.transform.rotation = Quaternion.Euler(RFoot.transform.eulerAngles + new Vector3(90, 0, 0));
+            RFoot.transform.position = Joints[18];
             if (m_isKFWFingers == true)
             {
                 //7-HandLeft, 21-HandTipLeft

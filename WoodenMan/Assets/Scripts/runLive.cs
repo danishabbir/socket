@@ -4,12 +4,15 @@ using System.Collections.Generic;
 
 abstract public class runLive
 {
-    protected GameObject[] m_JointSpheres;
-    protected GameObject[] m_Bones;
+    public GameObject[] m_JointSpheres;
+    public GameObject[] m_Bones;
     public Material m_WoodMatRef;
 
     public bool m_isVRMode = false;
     public bool m_isMoveFloor = false;
+
+    public GameObject LFoot;
+    public GameObject RFoot;
 
     abstract public void Start();
     abstract public void Update(string Line);
@@ -34,8 +37,11 @@ abstract public class runLive
         Bone.transform.localScale = new Vector3(xyScale, xyScale, zScale);
 
         // Rotate z-axis to align with bone vector
-        Bone.transform.rotation = Quaternion.LookRotation(BoneVec.normalized);
-        // Position at middle
-        Bone.transform.position = (Start + End) / 2.0f;
+        if (BoneVec.magnitude > 0.00001)
+        {
+            Bone.transform.rotation = Quaternion.LookRotation(BoneVec.normalized);
+            // Position at middle
+            Bone.transform.position = (Start + End) / 2.0f;
+        }
     }
 }
