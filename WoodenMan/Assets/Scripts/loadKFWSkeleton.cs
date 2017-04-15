@@ -32,12 +32,12 @@ public class loadKFWSkeleton : MonoBehaviour
         //Screen.SetResolution(1920, 1080, true);
         Application.runInBackground = true;
 
-        m_isVRMode = true;
-        m_isMoveFloor = false;
-        m_isVNECTMode = false;
+        m_isVRMode = false;
+        m_isMoveFloor = true;
+        m_isVNECTMode = true;
 
         if (m_isVNECTMode)
-            m_SequenceName = "DCorridor_VNECT";
+            m_SequenceName = "Football_2";
         else
             m_SequenceName = "DCorridor_KFW";
         FileStream fs = new FileStream(UnityEngine.Application.streamingAssetsPath + "/" + m_SequenceName + ".txt", FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -185,6 +185,7 @@ public class loadKFWSkeleton : MonoBehaviour
     void Update()
     {
         string Line = m_3DPoseFileStream.ReadLine();
+        Debug.Log(Line);
         m_isValid = false;
 
         if (Line.Length == 0)
