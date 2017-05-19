@@ -64,7 +64,7 @@ public class WebSocketClient : MonoBehaviour
         //Screen.SetResolution(1920, 1080, true);
         Application.runInBackground = true;
 
-        m_isKFWMode = true;
+        m_isKFWMode = false;
         ConnectWS();
 
         if (m_isKFWMode)

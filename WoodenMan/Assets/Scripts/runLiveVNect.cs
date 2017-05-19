@@ -99,8 +99,6 @@ public class runLiveVNect : runLive
 
     override public void Update(string Line)
     {
-
-
         //Debug.Log(Line);
 
         if (Line.Length == 0)
@@ -117,8 +115,8 @@ public class runLiveVNect : runLive
         for (int i = 0; i < m_JointSpheres.Length; ++i)
         {
             int Idx = m_ValidJointIdx[i];
-            Joints[i].x = float.Parse(Tokens[3 * Idx + 0 + ParseOffset]) * 0.001f; // Prevent mirroring
-            Joints[i].y = float.Parse(Tokens[3 * Idx + 1 + ParseOffset]) * 0.001f;
+            Joints[i].x = -float.Parse(Tokens[3 * Idx + 0 + ParseOffset]) * 0.001f; // Prevent mirroring
+            Joints[i].y = -float.Parse(Tokens[3 * Idx + 1 + ParseOffset]) * 0.001f;
             Joints[i].z = -float.Parse(Tokens[3 * Idx + 2 + ParseOffset]) * 0.001f; // Flip for Google VR
 
             if (Joints[i].y < LowestY)
