@@ -10,6 +10,9 @@ public class WebSocketClient : MonoBehaviour
 
     public GameObject LFoot;
     public GameObject RFoot;
+    private Quaternion m_ParentCamRot;
+    private Vector3 m_ParentCamPos;
+    private Vector3 m_ParentCamScale;
 
     private bool m_isKFWMode = true;
     private bool m_isRotateCamera = false;
@@ -18,16 +21,12 @@ public class WebSocketClient : MonoBehaviour
 
     void ConnectWS()
     {
-
         if (m_isWSConnected)
             return;
 
         m_Message = "No data.";
 
         using (m_ws = new WebSocket("ws://localhost:8080/"))
-        //using (m_ws = new WebSocket("ws://139.19.111.138:8080/")) // Dell big machine
-        //using (m_ws = new WebSocket("ws://139.19.106.145:8080/")) // Red machine
-        //using (m_ws = new WebSocket("ws://139.19.40.35:8080/")) // Oleks
         {
             //m_ws.Log.Level = WebSocketSharp.LogLevel.TRACE;
             //m_ws.Log.File = "D:\\ws_log.txt";
@@ -73,7 +72,12 @@ public class WebSocketClient : MonoBehaviour
             m_AnyMethod = new runLiveVNect();
 
         if (gameObject.name == "FollowerCamera" || gameObject.name == "ExternalCamera")
+        {
             m_AnyMethod.m_isVRMode = false;
+            m_ParentCamRot = transform.rotation;
+            m_ParentCamPos = transform.position;
+            m_ParentCamScale = transform.localScale;
+        }
         else
         {
             Debug.Log("Running in VR mode.");
@@ -151,6 +155,18 @@ public class WebSocketClient : MonoBehaviour
                 Debug.Log("Rotating camera.");
             else
                 Debug.Log("Stopping camera rotation.");
+        }
+
+        if (Input.GetKey(KeyCode.C) && m_AnyMethod.m_isVRMode == false)
+        {
+            Debug.Log("Before cam: " + transform.position);
+            Debug.Log("Before parent cam: " + m_ParentCamPos);
+            transform.position = m_ParentCamPos;
+            transform.rotation = m_ParentCamRot;
+            transform.localScale = m_ParentCamScale;
+            Debug.Log("After: " + transform.position);
+
+            Debug.Log("Reset camera to original position.");
         }
     }
 

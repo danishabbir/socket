@@ -115,7 +115,7 @@ public class runLiveVNect : runLive
         for (int i = 0; i < m_JointSpheres.Length; ++i)
         {
             int Idx = m_ValidJointIdx[i];
-            Joints[i].x = -float.Parse(Tokens[3 * Idx + 0 + ParseOffset]) * 0.001f; // Prevent mirroring
+            Joints[i].x = float.Parse(Tokens[3 * Idx + 0 + ParseOffset]) * 0.001f; // Mirror for ease of viewing (-1), no mirror (1)
             Joints[i].y = -float.Parse(Tokens[3 * Idx + 1 + ParseOffset]) * 0.001f;
             Joints[i].z = -float.Parse(Tokens[3 * Idx + 2 + ParseOffset]) * 0.001f; // Flip for Google VR
 
