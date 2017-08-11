@@ -1,0 +1,64 @@
+Initialize engine version: 5.5.1f1 (88d00a7498cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 960 (ID=0x1401)
+    Vendor:   NVIDIA
+    VRAM:     1969 MB
+    Driver:   21.21.13.7633
+Begin MonoManager ReloadAssembly
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\Google.ProtocolBuffers.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\Google.ProtocolBuffers.dll into Unity Child Domain
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\websocket-sharp.dll (this message is harmless)
+Loading E:\Projects\WoodenMan\WoodenMan_Data\Managed\websocket-sharp.dll into Unity Child Domain
+- Completed reload, in  2.390 seconds
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1200 59Hz; virtual: 3840x1282 at -1920,-82
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.149232 ms
+GVR Unity SDK Version: 1.1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Platform assembly: E:\Projects\WoodenMan\WoodenMan_Data\Managed\Mono.Security.dll (this message is harmless)
+Connection opened.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+8/11/2017 7:01:55 PM|FATAL|WebSocket.acceptException|WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+                             at WebSocketSharp.WsFrame+<>c__DisplayClasse.<ParseAsync>b__d (System.Byte[] header) [0x00000] in <filename unknown>:0 
+                             at WebSocketSharp.Ext+<>c__DisplayClass6.<ReadBytesAsync>b__5 (IAsyncResult ar) [0x00000] in <filename unknown>:0 
+Connection opened.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Format joints length is 58
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 3 worker threads for Enlighten.
+  Thread -> id: 2818 -> priority: 1 
+  Thread -> id: 5e8 -> priority: 1 
+  Thread -> id: 201c -> priority: 1 
+8/11/2017 7:02:15 PM|FATAL|WebSocket.acceptException|WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+                             at WebSocketSharp.WsFrame+<>c__DisplayClasse.<ParseAsync>b__d (System.Byte[] header) [0x00000] in <filename unknown>:0 
+                             at WebSocketSharp.Ext+<>c__DisplayClass6.<ReadBytesAsync>b__5 (IAsyncResult ar) [0x00000] in <filename unknown>:0 
+8/11/2017 7:02:22 PM|FATAL|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+                           
+                             at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
+                             at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
+                             at System.Net.Sockets.TcpClient.Connect (System.Net.IPEndPoint remote_end_point) [0x00000] in <filename unknown>:0 
+                             at System.Net.Sockets.TcpClient.Connect (System.Net.IPAddress[] ipAddresses, Int32 port) [0x00000] in <filename unknown>:0 
