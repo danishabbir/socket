@@ -22,8 +22,8 @@ Common::CWebSocketServer m_WSTransceiver;
 	****************************************
 	
 	
-	The order of joints defined in the WoodenMan\WoodenMan\Assets\runLiveVNect.cs 
+	The order of joints defined in the WoodenMan\WoodenMan\Assets\Scripts\runLiveVNect.cs 
 	
 	After building the main project WoodenMan, one can run the WoodenMan.exe.
-	Before sending anything to the WoodenMan, one has to start the WoodenMan.exe beforehand.
-	Only after that he or she can start the client.exe (your program) which will send the joint positions.
+	Before sending anything to the WoodenMan, one has to start WoodenMan.exe beforehand.
+	Only after that one shall start client.exe (your program) which will send the joint positions.
