@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../mongoose/mongoose.h
+stdio.h
+-
+stddef.h
+-
+sal.h
+-
+
+/home/whil/Desktop/WoodenMan/CWebSocket.cpp
+iostream
+-
+CWebSocketServer.hpp
+/home/whil/Desktop/WoodenMan/CWebSocketServer.hpp
+
+/home/whil/Desktop/WoodenMan/CWebSocketServer.hpp
+iostream
+-
+cstring
+-
+string
+-
+mutex
+-
+mongoose.h
+/home/whil/Desktop/WoodenMan/mongoose.h
+

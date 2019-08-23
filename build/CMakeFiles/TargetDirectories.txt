@@ -1,0 +1,14 @@
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/edit_cache.dir
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/install/strip.dir
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/socket.dir
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/rebuild_cache.dir
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/list_install_components.dir
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/install/local.dir
+/home/whil/Desktop/WoodenMan/build/CMakeFiles/install.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/install/strip.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/edit_cache.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/list_install_components.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/mongoose.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/install/local.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/rebuild_cache.dir
+/home/whil/Desktop/WoodenMan/build/mongoose/CMakeFiles/install.dir

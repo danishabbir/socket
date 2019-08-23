@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/socket.dir/CWebSocket.cpp.o  -o socket -Wl,-rpath,/home/whil/Desktop/WoodenMan/mongoose/lib: ../mongoose/lib/libmongoose.so -ldl -lpthread 
